@@ -5,7 +5,7 @@
                 <h1 class="mt-4">Data Member</h1>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <a class="btn btn-success" v-b-modal.modal_member>Tambah Member</a>
+                        <a class="btn btn-success" v-b-modal.modal_member @click="Add()">Tambah Member</a>
                         <table class="table">
                             <tr>
                                 <td>ID MEMBER</td>
@@ -22,7 +22,7 @@
                                 <td>{{ mem.tlp }}</td>
                                 <td>{{ mem.alamat }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-info">Ubah</a>
+                                    <a v-b-modal.modal_member href="#" class="btn btn-info" @click="Edit(mem)">Ubah</a>
                                     <a href="#" class="btn btn-danger">Hapus</a>
                                 </td>
                             </tr>
@@ -58,11 +58,13 @@
 module.exports =  {
     data: function(){
         return {
+            id_member: "",
             nama: "",
             jk:"",
             tlp:"",
             alamat:"",
             member: [],
+            action:""
         }
     },
     methods: {
@@ -82,6 +84,22 @@ module.exports =  {
           })
 
         },
+        Add: function(){
+            this.action = "insert";
+            this.id_member = "";
+            this.nama = "";
+            this.jk = "";
+            this.tlp = "";
+            this.alamat = "";
+        },
+        Edit: function(item){
+            this.action = "update";
+            this.id_member = item.id_member;
+            this.nama = item.nama;
+            this.jk = item.jenis_kelamin;
+            this.tlp = item.tlp;
+            this.alamat = item.alamat;
+        },
         Save: function(){
             let config = {
                 headers : {
@@ -96,14 +114,21 @@ module.exports =  {
                 "tlp": this.tlp,
             }
 
-            axios.post(base_url + '/member', form, config)
-            .then( response => {
-                console.log(response);
-                alert(response.data.message);
-                // if(response.data.success == true){
-                    
-                // }
-            })
+            //logika method post/get (insert /update)
+            if(this.action == "insert"){
+                axios.post(base_url + '/member', form, config)
+                .then( response => {
+                    alert(response.data.message);
+                })
+            } else { //update
+                axios.put(base_url + '/member/' + this.id_member, form, config)
+                .then( response => {
+                    alert(response.data.message);
+                })
+            }
+            
+            this.getData();
+            
         }
     },
     mounted() {
