@@ -23,7 +23,7 @@
                                 <td>{{ mem.alamat }}</td>
                                 <td>
                                     <a v-b-modal.modal_member href="#" class="btn btn-info" @click="Edit(mem)">Ubah</a>
-                                    <a href="#" class="btn btn-danger">Hapus</a>
+                                    <a href="#" class="btn btn-danger" @click="Delete(mem.id_member)">Hapus</a>
                                 </td>
                             </tr>
                         </table>
@@ -129,7 +129,25 @@ module.exports =  {
             
             this.getData();
             
+        },
+        Delete: function(id){
+           if(confirm("Apakah anda yakin menghapus data member ini?")){
+
+                let config = {
+                    headers : {
+                    "Authorization" : "Bearer " + this.$cookies.get('Authorization')
+                    }
+                }
+
+                axios.delete(base_url + '/member/' + id, config)
+                .then( response => {
+                    alert(response.data.message);
+                })
+
+                this.getData();
+           }
         }
+
     },
     mounted() {
         this.getData();
