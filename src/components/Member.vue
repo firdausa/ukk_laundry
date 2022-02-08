@@ -32,7 +32,12 @@
             </div>
         </main>
 
-        <b-modal id="modal_member" ref="modal" title="Form Member" size="md" @ok="Save">
+        <b-modal 
+            id="modal_member" 
+            ref="modal" 
+            title="Form Member" 
+            size="md" 
+            @ok="Save">
             <form>
                 <div class="form-floating mb-3 mb-md-0">
                     <input v-model="nama" placeholder="Enter your first name" v-modal="nama" id="inputNama" class="form-control" type="text"/>
@@ -43,7 +48,11 @@
                     <label for="inputTlp">Telepon</label>
                 </div>
                 <div class="form-floating mb-3 mb-md-0">
-                    <input v-model="jk" placeholder="Enter your first name" v-modal="jk" id="inputJk" class="form-control" type="text"/>
+                    <select v-model="jk" class="form-control">
+                        <option value="l">Laki-Laki</option>
+                        <option value="p">Perempuan</option>
+                    </select>
+
                     <label for="inputJk">Jenis Kelamin</label>
                 </div>
                 <div class="form-floating mb-3 mb-md-0">
